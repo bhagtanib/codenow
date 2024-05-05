@@ -15,9 +15,9 @@ const HomeProblemsHeader = () => {
 const HomeProblem = () => {
   return (
     <div className={styles.problemContainer}>
-      <img src="https://sciencevikinglabs.com/assets/img/leetcode/00001_Two_Sum/header.png" />
+      <img src="https://miro.medium.com/v2/resize:fit:958/1*2SlTTY_34bjOohBZ47jdCw.png" />
       <div className={styles.problemRight}>
-        <p className={styles.problemTitle}>Leet Code: Two Sums</p>
+        <p className={styles.problemTitle}>Leet Code: Two Sum</p>
         <p className={styles.problemStats}> 10 Views</p>
         <div className={styles.problemUser}>
           <img
@@ -28,6 +28,11 @@ const HomeProblem = () => {
           />
           <p className={styles.problemUserName}>Bhavesh Bhagtani</p>
         </div>
+        <p className={styles.problemDescription}>
+          {" "}
+          Img elements must have an alt prop, either with meaningful text, or an
+          empty string for decorative images
+        </p>
       </div>
     </div>
   );

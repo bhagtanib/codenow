@@ -19,6 +19,8 @@
   /* border: 2px solid var(--main-grey); */
   border-radius: 20px;
   margin: 20px 0;
+  height: 150px;
+  transition: all 0.5s ease;
 }
 .problemContainer img {
   height: 150px;
@@ -29,16 +31,19 @@
 .problemRight {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   margin: 0;
   padding: 0;
+  max-height: 100%;
+  overflow-y: hidden;
 }
 .problemTitle {
   font-size: larger;
   font-weight: 600;
+  padding-bottom: 5px;
 }
 
 .problemUser {
+  padding-top: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -47,4 +52,7 @@
   height: 30px;
   width: 30px;
   border-radius: 50%;
+}
+.problemDescription{
+
 }

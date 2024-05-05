@@ -2,8 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(23, 23, 23);
-  color: white;
+  /* background-color: rgb(23, 23, 23);
+  color: white; */
   scrollbar-width: none;
 }
 :root {
@@ -11,4 +11,8 @@
   --main-orange: #e86840;
   --main-blue: #090e43;
   --main-grey: #9c9fa0;
+  --light-grey: #e8ebec;
+}
+button{
+  cursor: pointer;
 }
