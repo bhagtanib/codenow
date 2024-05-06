@@ -1,27 +1,27 @@
-.container{
-    width: 200px;
-    height: 100%;
-    text-align: center;
-    font-size: large;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    border: 2px solid var(--main-grey);
+.itemContainer {
+  display: flex;
+  padding: 10px 10px;
+  width: 300px;
+  align-items: flex-end;
+  cursor: pointer;
+  gap: 20px;
+  background-color: var(--color-sidebar);
+  transition: all 0.4s ease;
 }
-
-.item p {
-    font-size: large;
-    padding: 20px 0;
+.itemContainer:hover {
+  transform: scale(1.02);
+  background-color: var(--color-background);
 }
-
-.stat{
-    display: flex;
-    flex-direction: column;
-    padding: 10px 20px;
-    gap: 10px;
+.itemContainer p {
+  font-size: small;
+  margin-top: 5px;
 }
-.statsTop{
-    display: flex;
-    justify-content: space-between;
-
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: var(--color-sidebar);
+  width: 300px;
+  height: 100%;
+  padding-top: 5% ;
 }

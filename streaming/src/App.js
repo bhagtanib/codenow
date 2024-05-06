@@ -15,12 +15,12 @@ const App = () => {
 
   return (
     <div>
-        <Navbar />
       <Routes>
         <Route
           path="/"
           element={
             <>
+            <Navbar />
               <Hero />
             </>
           }
