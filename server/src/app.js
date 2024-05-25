@@ -7,11 +7,14 @@ const video  = require('./api/v1/videos');
 const comment  = require('./api/v1/comments');
 const favorite  = require('./api/v1/favorites');
 const search  = require('./api/v1/search');
+const problem  = require('./api/v1/problems');
+const category  = require('./api/v1/categories');
 const auth  = require('./api/v1/auth');
 const express = require('express');
 const config = require('config');
+const cors = require('cors')
 const app = express();
-
+app.use(cors())
 if(!config.get('jwtKey')){
   console.log('FATAL ERROR: jwtPrivateKey not defined');
   process.exit(1);
@@ -28,6 +31,8 @@ app.use('/api/v1/comment', comment);
 app.use('/api/v1/video', video);
 app.use('/api/v1/users', users);
 app.use('/api/v1/search', search);
+app.use('/api/v1/problems', problem);
+app.use('/api/v1/categories', category);
 app.use('/api/v1/auth', auth);
 
 

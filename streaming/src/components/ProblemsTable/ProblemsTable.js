@@ -1,100 +1,141 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ProblemsTable.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading } from "../../Redux/slices";
 
 const TableRow = ({ rowData }) => {
   return (
     <tr>
-      <td>{rowData.Status ? "Active" : "Inactive"}</td>
-      <td>{rowData.Title}</td>
-      <td>{rowData.Solution}</td>
-      <td>{rowData.Acceptance}</td>
-      <td>{rowData.Difficulty}</td>
-      <td>{rowData.Frequency}</td>
+      <td>
+        <input
+          width="30"
+          height="30"
+          type="checkbox"
+          checked={rowData.status}
+          onChange={(e) => {
+            // Handle checkbox change here, e.g., update rowData.status
+          }}
+        />
+      </td>{" "}
+      <td style={{ cursor: "pointer" }}>{rowData.title}</td>
+      <td>
+        <img
+          width="30"
+          height="30"
+          src="https://img.icons8.com/ios-glyphs/30/FFFFFF/play-button-circled--v1.png"
+          alt="play-button-circled--v1"
+        />
+      </td>
+      {/* <td>{rowData.Solution}</td> */}
+      <td>{rowData.acceptance}%</td>
+      <td>{rowData.difficulty}</td>
+      <td>{rowData.frequency}</td>
     </tr>
   );
 };
 
 const ProblemsTable = () => {
-  const tableData = [
+  const [sortBy, setSortBy] = useState(null);
+
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  // const [loading, setLoading] = useState(true);
+
+  const [tableData, setTableData] = useState([
     {
       Status: true,
-      Title:
-        "Remove Nodes From Linked List Remove Nodes From Linked List Remove Nodes From Linked List Remove Nodes From Linked List",
-      Solution: "Medium",
-      Acceptance: "68%",
-      Difficulty: "Hard",
+      Title: "Two Sum",
+      Solution: "https://leetcode.com/problems/two-sum/",
+      Acceptance: "50",
+      Difficulty: "Easy",
       Frequency: "High",
     },
-    {
-      Status: true,
-      Title: "Regular Expression Matching",
-      Solution: "Hard",
-      Acceptance: "85%",
-      Difficulty: "Easy",
-      Frequency: "Low",
-    },
-    {
-      Status: true,
-      Title: "Remove Nodes From Linked List",
-      Solution: "Medium",
-      Acceptance: "68%",
-      Difficulty: "Hard",
-      Frequency: "High",
-    },
-    {
-      Status: true,
-      Title: "Regular Expression Matching",
-      Solution: "Hard",
-      Acceptance: "85%",
-      Difficulty: "Easy",
-      Frequency: "Low",
-    },
-    {
-      Status: true,
-      Title: "Remove Nodes From Linked List",
-      Solution: "Medium",
-      Acceptance: "68%",
-      Difficulty: "Hard",
-      Frequency: "High",
-    },
-    {
-      Status: true,
-      Title: "Regular Expression Matching",
-      Solution: "Hard",
-      Acceptance: "85%",
-      Difficulty: "Easy",
-      Frequency: "Low",
-    },
-    // Add more data as needed
-  ];
+  ]);
+  const dispatch = useDispatch();
+  const problems = useSelector(
+    (state) => state.currentProblems.filteredProblems
+  );
+  const loading = useSelector((state) => state.currentProblems.loading);
+
+  useEffect(() => {
+    if (problems) {
+      const currProblems = [...problems];
+      setTableData(currProblems);
+    }
+  }, [problems]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 2000);
+  });
+
+  // Function to handle sorting by a specific column
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      // Toggle sort order if clicking on the same column
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Set new sort column and default to ascending order
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
+  // Sort table data based on the current sort criteria
+  const sortedTableData = tableData.sort((a, b) => {
+    if (sortBy === "title" || sortBy === "difficulty") {
+      const aValue = a[sortBy].toLowerCase();
+      const bValue = b[sortBy].toLowerCase();
+      if (sortOrder === "asc") {
+        return aValue.localeCompare(bValue);
+      } else {
+        return bValue.localeCompare(aValue);
+      }
+    }
+    // Default to no sorting
+    return 0;
+  });
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.wrapper}> */}
+      {loading ? (
+        <div className={styles.loading}>Loading...</div>
+      ) : (
         <table className={styles.table}>
           <thead>
             <tr>
               <th>Status</th>
-              <th>Title</th>
+              <th>
+                Title{" "}
+                <button
+                  className={styles.sortButton}
+                  onClick={() => handleSort("title")}
+                >
+                  {sortBy === "title" && sortOrder === "asc" ? "▲" : "▼"}
+                </button>
+              </th>
               <th>Solution</th>
               <th>Acceptance</th>
-              <th>Difficulty</th>
+              <th>
+                Difficulty{" "}
+                <button
+                  className={styles.sortButton}
+                  onClick={() => handleSort("difficulty")}
+                >
+                  {sortBy === "difficulty" && sortOrder === "asc" ? "▲" : "▼"}
+                </button>
+              </th>
               <th>Frequency</th>
             </tr>
           </thead>
           <tbody>
-            {tableData.map((rowData, index) => (
-              <>
-                <TableRow key={index} rowData={rowData} />
-                <TableRow key={index} rowData={rowData} />
-                <TableRow key={index} rowData={rowData} />
-                <TableRow key={index} rowData={rowData} />
-                <TableRow key={index} rowData={rowData} />
-              </>
+            {sortedTableData.map((rowData, index) => (
+              <TableRow key={index} rowData={rowData} />
             ))}
           </tbody>
         </table>
-      {/* </div> */}
+      )}
     </div>
   );
 };

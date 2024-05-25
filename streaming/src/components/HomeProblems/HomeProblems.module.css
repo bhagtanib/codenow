@@ -37,7 +37,7 @@
   overflow-y: hidden;
 }
 .problemTitle {
-  font-size: larger;
+  /* font-size: larger; */
   font-weight: 600;
   padding-bottom: 5px;
 }

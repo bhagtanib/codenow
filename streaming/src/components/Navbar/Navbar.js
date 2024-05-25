@@ -10,8 +10,7 @@ const Navbar = () => {
           src="https://png.pngtree.com/png-vector/20220702/ourmid/pngtree-coding-logo-template-illustration-design-png-image_5673078.png"
           alt="laptop-coding"
         />
-        <span> About</span>
-        <span> Project</span>
+        <span>Practice </span>
       </div>
       <div className={classes.navbarRight}>
         <button> Login </button>

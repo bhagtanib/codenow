@@ -1,9 +1,31 @@
-const mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const { Category } = require("../../models/category");
 
-const categorySchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  description: String,
-  // Add other fields as needed
+// GET all categories
+router.get('/', async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-module.exports = mongoose.model('Category', categorySchema);
+// POST a new category
+router.post('/', async (req, res) => {
+  const category = new Category({
+    name: req.body.name,
+    description: req.body.description
+    // Add other fields here if needed
+  });
+
+  try {
+    const newCategory = await category.save();
+    res.status(201).json(newCategory);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+module.exports = router;

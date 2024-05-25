@@ -1,92 +1,102 @@
-import React, { useEffect, useState, useRef } from "react";
+// import React, { useEffect, useState, useRef } from "react";
 import styles from "./HomeListHeader.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { filterDifficulty, searchInputFilter } from "../../util/util";
+import {  setLoading, updateProblems } from "../../Redux/slices";
+import axios from "axios"; // Import Axios
 
-const DropDownItem = ({ title, dropdownItems, isOpen, toggleDropdown }) => {
+const DropDownItem = ({ title, items }) => {
+  // const [openIdx, setOpenIdx] = useState(1);
+  const problems = useSelector((state) => state.currentProblems.problems);
+  const dispatch = useDispatch();
+
+  const handleDropdownItemClick = async (item) => {
+    dispatch(setLoading(true));
+
+    if (title === "lists") {
+      try {
+        let response = await axios.get(
+          `http://localhost:27017/api/v1/problems/by-list/${item}`
+        );
+        response = response.data;
+        console.log(response);
+
+        dispatch(
+          updateProblems({
+            problems: response,
+            filteredProblems: response,
+            listName: item,
+          })
+        );
+
+        setTimeout(() => dispatch(setLoading(false)), 1000);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else if (title === "difficulty") {
+      dispatch(setLoading(true));
+      const filteredProblems = filterDifficulty(problems, item);
+      dispatch(
+        updateProblems({
+          problems: problems,
+          filteredProblems: filteredProblems,
+          listName: item,
+        })
+      );
+      setTimeout(() => dispatch(setLoading(false)), 1000);
+    } else if (title === "status") {
+      
+    }
+  };
   return (
-    <div>
-      <span className={styles.item} onClick={toggleDropdown}>
-        {title}
-        <img
-          src="https://img.icons8.com/ios-filled/50/FFFFFF/expand-arrow--v1.png"
-          alt="expand-arrow--v1"
-        />
-      </span>
-      {isOpen && (
-        <div className={styles.dropdownItems}>
-          {dropdownItems.map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
-      )}
+    <div className={styles.item}>
+      {title}
+      <img
+        src="https://img.icons8.com/ios-filled/50/FFFFFF/expand-arrow--v1.png"
+        alt="expand-arrow"
+      />
+      <div className={styles.dropdownItems}>
+        {items.map((item, index) => {
+          return (
+            <div key={index} onClick={() => handleDropdownItemClick(item)}>
+              {item}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
 
 const HomeListHeader = () => {
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const problems = useSelector((state) => state.currentProblems.problems);
+  const dispatch = useDispatch();
 
-  const toggleDropdown = (dropdownIdx) => {
-    if (openDropdown === dropdownIdx) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown(dropdownIdx);
-    }
+  const handleInput = (e) => {
+    dispatch(setLoading(true));
+    const filteredProblems = searchInputFilter(problems, e.target.value);
+    dispatch(updateProblems({ problems, filteredProblems, listName: "Top75" }));
+    setTimeout(() => dispatch(setLoading(false)), 1000);
   };
 
   const modelDataList = {
-    listsData: ["Blind 75", "Blind 100", "Blind 50"],
+    listsData: ["Top 75", "Best 100", "Blind 50"],
     difficultyData: ["Easy", "Medium", "Hard"],
-    statsData: ["Solved", "Unsolved"],
+    statusData: ["Solved", "Unsolved"],
   };
 
-  // Close dropdown when clicking outside
-  const dropdownRef = useRef(null);
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className={styles.container} ref={dropdownRef}>
-      <DropDownItem
-        dropdownItems={modelDataList.listsData}
-        title={"Lists"}
-        isOpen={openDropdown === "Lists"}
-        toggleDropdown={() => toggleDropdown("Lists")}
-      />
-      <DropDownItem
-        dropdownItems={modelDataList.difficultyData}
-        title={"Difficulty"}
-        isOpen={openDropdown === "Difficulty"}
-        toggleDropdown={() => toggleDropdown("Difficulty")}
-      />
-      <DropDownItem
-        dropdownItems={modelDataList.statsData}
-        title={"Status"}
-        isOpen={openDropdown === "Status"}
-        toggleDropdown={() => toggleDropdown("Status")}
-      />
-      <DropDownItem
-        dropdownItems={modelDataList.listsData}
-        title={"Tags"}
-        isOpen={openDropdown === "Tags"}
-        toggleDropdown={() => toggleDropdown("Tags")}
-      />
-      <input placeholder="search problems..." />
+    <div className={styles.container}>
+      {Object.entries(modelDataList).map(([key, items]) => (
+        <DropDownItem key={key} title={key.replace("Data", "")} items={items} />
+      ))}
+      <input onChange={handleInput} placeholder="search problems..." />
       <img
         width="40"
         height="40"
         src="https://img.icons8.com/glyph-neue/64/FFFFFF/shuffle.png"
         alt="shuffle"
-      />{" "}
+      />
     </div>
   );
 };

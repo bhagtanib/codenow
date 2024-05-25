@@ -1,16 +1,11 @@
 import ProgressBar from "../ProgressBar/ProgressBar";
 import styles from "./Sidebar.module.css";
 
-const SidebarItem = ({details}) => {
+const SidebarItem = ({ details }) => {
   return (
     <div className={styles.itemContainer}>
       <div className={styles.itemLeft}>
-        <img
-          width="36"
-          height="36"
-          src=  {details.image}
-          alt="ninja"
-        />{" "}
+        <img width="36" height="36" src={details.image} alt="ninja" />{" "}
       </div>
       <div className={styles.itemRight}>
         <h2>{details.heading}</h2>
@@ -25,8 +20,8 @@ const Info = () => {
     <div className={styles.itemContainer}>
       <div className={styles.itemLeft}>
         <img
-          width="48"
-          height="48"
+          width="30"
+          height="30"
           src="https://img.icons8.com/color/48/xbox-b--v1.png"
           alt="xbox-b--v1"
         />
@@ -43,29 +38,36 @@ const Sidebar = () => {
     {
       heading: "Practice",
       description:
-        " A lvely platform designde to d wh xw deuinoid  iec ow iwgue ui ",
+        "Sharpen your coding skills with exercises tailored to your level.",
       image: "https://img.icons8.com/glyph-neue/64/FFFFFF/ninja.png",
     },
     {
       heading: "Categories",
-      description: " Choose among the top categories ",
+      description:
+        "Explore a variety of coding challenges matched to your interests.",
       image: "https://img.icons8.com/ios-filled/100/FFFFFF/categorize.png",
     },
     {
       heading: "Playlist",
       description:
-        "Hand picked leetcode question to help you excel your next intervies",
+        "Discover LeetCode gems curated to elevate your interview performance.",
       image: "https://img.icons8.com/ios/100/FFFFFF/bulleted-list.png",
+    },
+
+    {
+      heading: "Top Employers",
+      description:
+        "Unlock  access to interview questions asked by top-tier tech companies.",
+      image: "https://img.icons8.com/wired/64/FFFFFF/company.png",
     },
   ];
   return (
-      <div className={styles.sidebarContainer}>
+    <div className={styles.sidebarContainer}>
       <Info />
-        {sideOptions
-          .map((item) => (
-            <SidebarItem details = {item} />
-          ))}
-      </div>
+      {sideOptions.map((item, index) => (
+        <SidebarItem key={index} details={item} />
+      ))}
+    </div>
   );
 };
 

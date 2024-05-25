@@ -1,7 +1,7 @@
 @import "../../index.css";
 
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -10,14 +10,16 @@
   height: var(--navbar-height);
   align-items: center;
   font-weight: 600;
-  font-size: large;
+  background-color: transparent;
+  /* font-size: large; */
 }
 .navbarLeft,
 .navbarRight {
   display: flex;
   gap: 30px;
   height: var(--navbar-height);
-  color: var(--main-blue);
+  /* color: var(--main-blue); */
+  color: white;
   letter-spacing: 1.1;
   align-items: center;
 }
@@ -25,6 +27,13 @@
   width: 40%;
   justify-content: space-around;
   padding-left: 20vh;
+  
+}
+.navbarLeft span{
+  color: var(--main-blue);
+  color: white;
+
+
 }
 .navbarRight {
   padding-right: 25vh;

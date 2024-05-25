@@ -11,6 +11,7 @@
   width: 300px;
 }
 .right{
+  padding: 20px;
   width: calc(100vw - 300px);
   display: flex;
   flex-direction: column;
